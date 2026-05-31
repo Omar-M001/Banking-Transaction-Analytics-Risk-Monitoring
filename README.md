@@ -55,7 +55,7 @@ The project uses a synthetic banking transactions dataset containing approximate
 ---
 
 ## Project Architecture
-![Project Architecture Diagram](Project Architecture Diagram.png)
+![Project Architecture Diagram](Project_Architecture_Diagram.png)
 
 ## Phase 1: Data Cleaning & Preparation
 
