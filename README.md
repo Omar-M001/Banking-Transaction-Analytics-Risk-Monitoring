@@ -218,8 +218,8 @@ ORDER BY avg_customer_risk DESC;
 Three interactive dashboards were built inside Databricks using the cleaned Delta table as the data source.
 
 ### Transaction Dashboard
-![Transaction Overview](assets/Banking_1.png)
-![City by Account Type](assets/Banking_2.png)
+![Transaction Overview](Banking_1.png)
+![City by Account Type](Banking_2.png)
 
 | Visual | Description |
 |---|---|
