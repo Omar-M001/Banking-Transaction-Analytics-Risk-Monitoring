@@ -100,10 +100,10 @@ Credit_Card_Balance / Credit_Limit
 Measures how heavily a customer is using their available credit. Higher utilization generally signals higher financial pressure and elevated risk.
 
 ### Utilization Buckets
-Customers categorized into: `Low`, `Medium`, `High`, `Over Limit` — simplifies business reporting and dashboard filtering.
+Customers categorized into `Low`, `Medium`, `High`, and `Over Limit` simplifies business reporting and dashboard filtering.
 
 ### Rewards Buckets
-Customers grouped into: `Low Rewards`, `Medium Rewards`, `High Rewards` — used to analyze whether highly engaged customers show different risk profiles.
+Customers grouped into `Low Rewards`, `Medium Rewards`, and `High Rewards` were used to analyze whether highly engaged customers show different risk profiles.
 
 ### Transaction Ranges
 Transactions grouped into: `<100`, `100–499`, `500–999`, `1000+` — used to understand transaction size distribution.
@@ -235,7 +235,7 @@ Three interactive dashboards were built inside Databricks using the cleaned Delt
 ## Phase 5: Databricks Genie AI Assistant
 ![Genie AI Assistant](AI.png)
 
-A **Databricks Genie Space** was configured to allow business users to explore the banking dataset using natural language — no SQL knowledge required.
+A **Databricks Genie Space** was configured to allow business users to explore the banking dataset using natural language, no SQL knowledge required.
 
 ### Configuration
 
@@ -301,7 +301,7 @@ lr = LogisticRegression(
 model = lr.fit(train_df)
 ```
 
-**Result:** The model predicted almost exclusively low-risk customers. AUC appeared acceptable on the surface but the confusion matrix revealed near-zero recall for the high-risk class.
+**Result:** The model predicted almost exclusively low-risk customers. AUC appeared acceptable on the surface, but the confusion matrix revealed near-zero recall for the high-risk class.
 
 **Lesson learned:** Severe class imbalance (~94% low-risk / ~6% high-risk) caused the model to learn the majority class distribution and ignore the minority. A naive accuracy metric is misleading in this context.
 
@@ -324,15 +324,15 @@ weighted_lr = LogisticRegression(
 )
 ```
 
-**Result:** Weighted AUC ≈ **0.56**. Modest improvement — the model began identifying some high-risk customers but still struggled with precision on the minority class.
+**Result:** Weighted AUC ≈ **0.56**. Modest improvement, the model began identifying some high-risk customers, but still struggled with precision on the minority class.
 
-**Lesson learned:** Class weighting helps, but is not sufficient when the underlying features do not strongly separate the two classes. The engineered `Risk_Label` (based on average anomaly ≥ 0.5) is a noisy proxy — this limits supervised model ceiling regardless of algorithm choice.
+**Lesson learned:** Class weighting helps, but is not sufficient when the underlying features do not strongly separate the two classes. The engineered `Risk_Label` (based on average anomaly ≥ 0.5) is a noisy proxy, which limits supervised model ceiling regardless of algorithm choice.
 
 ---
 
 ### Attempt 3: Isolation Forest (Unsupervised)
 
-**Approach:** Switched to an unsupervised approach using scikit-learn's `IsolationForest` to detect unusual behavioral patterns directly — without relying on the engineered labels during training.
+**Approach:** Switched to an unsupervised approach using scikit-learn's `IsolationForest` to detect unusual behavioral patterns directly without relying on the engineered labels during training.
 
 ```python
 iso_model = IsolationForest(
@@ -345,7 +345,7 @@ iso_model.fit(X)
 
 **Result:** ~250 customers flagged as anomalous. F1 score ≈ **0.08** when evaluated against the engineered `Risk_Label`.
 
-**Lesson learned:** The low F1 is expected and does not mean the model is wrong — it reflects that Isolation Forest identifies genuinely *unusual behavioral patterns* that do not necessarily align with the engineered risk labels. This is a valuable finding: the two approaches are detecting different signals, and in the absence of confirmed fraud labels, Isolation Forest offers a complementary, label-free view of customer risk.
+**Lesson learned:** The low F1 is expected and does not mean the model is wrong; it reflects that Isolation Forest identifies genuinely *unusual behavioral patterns* that do not necessarily align with the engineered risk labels. This is a valuable finding: the two approaches are detecting different signals, and in the absence of confirmed fraud labels, Isolation Forest offers a complementary, label-free view of customer risk.
 
 ---
 
@@ -353,7 +353,7 @@ iso_model.fit(X)
 
 | Model | Type | Key Metric | Outcome |
 |---|---|---|---|
-| Logistic Regression | Supervised | AUC — misleadingly high | Predicted mostly low-risk; class imbalance dominated |
+| Logistic Regression | Supervised | AUC: misleadingly high | Predicted mostly low-risk; class imbalance dominated |
 | Weighted Logistic Regression | Supervised (Weighted) | AUC ≈ 0.56 | Modest improvement; label noise limits ceiling |
 | Isolation Forest | Unsupervised | F1 ≈ 0.08 vs engineered labels | Detects behavioral anomalies independent of labels |
 
@@ -363,9 +363,9 @@ iso_model.fit(X)
 
 ## Key Business Findings
 
-- **Utilization & Risk:** Higher credit utilization ratios consistently correspond with higher anomaly rates — customers using more of their available credit show elevated behavioral risk signals.
+- **Utilization & Risk:** Higher credit utilization ratios consistently correspond with higher anomaly rates. Customers using more of their available credit show elevated behavioral risk signals.
 - **Rewards & Risk:** High rewards points do not automatically imply lower risk. High-utilization, high-rewards customers represent a high-value but potentially higher-risk segment.
-- **Loan Behavior:** Loan status and loan size influence observed risk patterns — customers with active or larger loans show different anomaly profiles.
+- **Loan Behavior:** Loan status and loan size influence observed risk patterns. Customers with active or larger loans show different anomaly profiles.
 - **Transaction Volume:** The vast majority of transactions (4,010 out of ~5,000) fall in the `$1,000+` range, suggesting this customer base is predominantly engaged in high-value banking activity.
 - **Low Rewards = Highest Risk:** Customers in the Low Rewards bucket carry the highest average customer risk (0.07), slightly above Medium (0.06) and High Rewards (0.06).
 
