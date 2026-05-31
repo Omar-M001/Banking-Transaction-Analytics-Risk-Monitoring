@@ -218,6 +218,8 @@ ORDER BY avg_customer_risk DESC;
 Three interactive dashboards were built inside Databricks using the cleaned Delta table as the data source.
 
 ### Transaction Dashboard
+![Transaction Overview](assets/Banking_1.png)
+![City by Account Type](assets/Banking_2.png)
 
 | Visual | Description |
 |---|---|
@@ -245,6 +247,7 @@ Three interactive dashboards were built inside Databricks using the cleaned Delt
 ---
 
 ## Phase 5 — Databricks Genie AI Assistant
+![Genie AI Assistant](assets/AI.png)
 
 A **Databricks Genie Space** was configured to allow business users to explore the banking dataset using natural language — no SQL knowledge required.
 
