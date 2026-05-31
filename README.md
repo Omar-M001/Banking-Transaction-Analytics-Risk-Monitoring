@@ -57,7 +57,7 @@ The project uses a synthetic banking transactions dataset containing approximate
 ## Project Architecture
 ![Project Architecture Diagram](Project Architecture Diagram.png)
 
-## Phase 1 — Data Cleaning & Preparation
+## Phase 1: Data Cleaning & Preparation
 
 The raw dataset was loaded into Databricks and cleaned using PySpark.
 
@@ -89,7 +89,7 @@ df_clean = df_cleaned_cols.withColumn(
 
 ---
 
-## Phase 2 — Feature Engineering
+## Phase 2: Feature Engineering
 
 Several business-focused features were engineered to support analytics, dashboards, and machine learning.
 
@@ -132,7 +132,7 @@ customer_features = customer_features.withColumn(
 
 ---
 
-## Phase 3 — SQL Analytics
+## Phase 3: SQL Analytics
 
 Multiple business-focused SQL queries were developed to support the dashboards and Genie AI assistant.
 
@@ -194,7 +194,7 @@ ORDER BY avg_customer_risk DESC;
 
 ---
 
-## Phase 4 — Dashboard Development
+## Phase 4: Dashboard Development
 
 Three interactive dashboards were built inside Databricks using the cleaned Delta table as the data source.
 
@@ -212,7 +212,6 @@ Three interactive dashboards were built inside Databricks using the cleaned Delt
 
 ### Loan Dashboard
 ![Loan Rejection Over Time](Banking_04.png)
-![Average Customer Risk by Reward Bucket](Banking_5.png)
 ![Number Of Loans by Loan Status](Banking_6.png)
 
 | Visual | Description |
@@ -223,6 +222,7 @@ Three interactive dashboards were built inside Databricks using the cleaned Delt
 
 ### Risk Dashboard
 ![ The Relationship Between Average Anomaly Rate And Utilization Ratio and Between Average Reward Points and Utilization Ratio](Banking_8.png)
+![Average Customer Risk by Reward Bucket](Banking_5.png)
 
 | Visual | Description |
 |---|---|
@@ -232,14 +232,14 @@ Three interactive dashboards were built inside Databricks using the cleaned Delt
 
 ---
 
-## Phase 5 — Databricks Genie AI Assistant
+## Phase 5: Databricks Genie AI Assistant
 ![Genie AI Assistant](AI.png)
 
 A **Databricks Genie Space** was configured to allow business users to explore the banking dataset using natural language — no SQL knowledge required.
 
 ### Configuration
 
-**Semantic layer — custom measures defined:**
+**Semantic layer: custom measures defined:**
 
 | Measure | Formula |
 |---|---|
@@ -263,7 +263,7 @@ Ground-truth SQL was manually written for each example question and compared aga
 
 ---
 
-## Phase 6 — Machine Learning Journey
+## Phase 6: Machine Learning Journey
 
 The ML goal was to predict **customer-level risk** using the engineered `Risk_Label` as the target. All models operated on a **customer-level aggregated dataset** (one row per customer) to prevent data leakage and bias from highly active customers.
 
@@ -282,7 +282,7 @@ The ML goal was to predict **customer-level risk** using the engineered `Risk_La
 
 ---
 
-### Attempt 1 — Logistic Regression
+### Attempt 1: Logistic Regression
 
 **Approach:** Standard binary Logistic Regression using Spark ML's `LogisticRegression`.
 
@@ -300,7 +300,7 @@ model = lr.fit(train_df)
 
 ---
 
-### Attempt 2 — Weighted Logistic Regression
+### Attempt 2: Weighted Logistic Regression
 
 **Approach:** Same Logistic Regression model but with class weights assigned to penalize misclassifying high-risk customers.
 
@@ -319,11 +319,11 @@ weighted_lr = LogisticRegression(
 
 **Result:** Weighted AUC ≈ **0.56**. Modest improvement — the model began identifying some high-risk customers but still struggled with precision on the minority class.
 
-**Lesson learned:** Class weighting helps but is not sufficient when the underlying features do not strongly separate the two classes. The engineered `Risk_Label` (based on average anomaly ≥ 0.5) is a noisy proxy — this limits supervised model ceiling regardless of algorithm choice.
+**Lesson learned:** Class weighting helps, but is not sufficient when the underlying features do not strongly separate the two classes. The engineered `Risk_Label` (based on average anomaly ≥ 0.5) is a noisy proxy — this limits supervised model ceiling regardless of algorithm choice.
 
 ---
 
-### Attempt 3 — Isolation Forest (Unsupervised)
+### Attempt 3: Isolation Forest (Unsupervised)
 
 **Approach:** Switched to an unsupervised approach using scikit-learn's `IsolationForest` to detect unusual behavioral patterns directly — without relying on the engineered labels during training.
 
