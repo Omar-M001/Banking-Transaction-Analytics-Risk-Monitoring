@@ -106,7 +106,7 @@ Customers categorized into `Low`, `Medium`, `High`, and `Over Limit` simplifies 
 Customers grouped into `Low Rewards`, `Medium Rewards`, and `High Rewards` were used to analyze whether highly engaged customers show different risk profiles.
 
 ### Transaction Ranges
-Transactions grouped into: `<100`, `100–499`, `500–999`, `1000+` — used to understand transaction size distribution.
+Transactions grouped into: `<100`, `100–499`, `500–999`, `1000+`, used to understand transaction size distribution.
 
 ### Risk Label (for Machine Learning)
 Customer-level risk labels were engineered by aggregating the transaction-level `Anomaly` field:
